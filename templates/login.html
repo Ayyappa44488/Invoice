@@ -23,7 +23,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background: linear-gradient(#1E2022, #52616B);
+            background: linear-gradient(#fff, #53C9C2);
             overflow: hidden;
         }
 
@@ -174,7 +174,7 @@
             left: 0;
             width: 100%;
             height: 40px;
-            background: linear-gradient(to right, #1E2022, #52616B);
+            background: linear-gradient(to right, #fff, #53C9C2);
             box-shadow: 0 2px 10px rgba(0, 0, 0, .4);
             font-size: 16px;
             color: #F0F5F9;
@@ -210,27 +210,6 @@
 <body>
 
     <div class="wrapper">
-        <div class="form-wrapper sign-up">
-            <form action="">
-                <h2>Sign Up</h2>
-                <div class="input-group">
-                    <input type="text" required>
-                    <label for="">Username</label>
-                </div>
-                <div class="input-group">
-                    <input type="email" required>
-                    <label for="">Email</label>
-                </div>
-                <div class="input-group">
-                    <input type="password" required>
-                    <label for="">Password</label>
-                </div>
-                <button type="submit" class="btn">Sign Up</button>
-                <div class="sign-link">
-                    <p>Already have an account? <a href="#" class="signIn-link">Sign In</a></p>
-                </div>
-            </form>
-        </div>
 
         <div class="form-wrapper sign-in">
             <form action="/validate" method="POST">
@@ -242,9 +221,6 @@
                 <div class="input-group">
                     <input type="password" name="password" required>
                     <label for="">Password</label>
-                </div>
-                <div class="forgot-pass">
-                    <a href="#">Forgot Password?</a>
                 </div>
                 <button type="submit" class="btn">Login</button>
                 

@@ -30,7 +30,7 @@
         <span onclick="closeForm()" class="close" title="Close window">&times;</span>
         <center><img src="/static/user.png"  style="border-radius:2.8cm"><br><br>
           <hr><br>
-          <label for="email"><b><span style="color:#fff">Hai...Welcome to Tele-medicine kiosk :)</span></b></label>
+          <label for="email"><b><span style="color:#fff">Hai...Welcome to Invoice Parser :)</span></b></label>
           <br><br>
           <label for="psw"><b><span style="color:#fff"></span></b></label>
           
@@ -41,10 +41,10 @@
         <button type="button" class="btn" onclick="document.location='/viewdata' "><b>viewdata</b></button>{%endif%}
         {%if session['username']=="admin"%}
         <button type="button" class="btn" onclick="document.location='/admin_data' "><b>admindata</b></button>{%endif%}
-
-      </form>
-      {%if session['username']%}
+        {%if session['username']%}
         <button type="button" class="btn" onclick="document.location='/logout' "><b>logout</b></button>{%endif%}
+      </form>
+      
     </div>
     <main>
         <section id="Home">

@@ -77,6 +77,14 @@
     <h2>Transaction Details</h2>
     <form action="/update_data/{{data[8]}}" method="POST">
         <div class="form-row">
+            <label for="invoice-id">Invoice Type:</label>
+            <input type="text" id="invoice-id" value="{{data[14]}}" name="type" >
+        </div>
+        <div class="form-row">
+            <label for="invoice-id">File Name:</label>
+            <input type="text" id="invoice-id" value="{{data[13]}}" name="filename" disabled>
+        </div>
+        <div class="form-row">
             <label for="invoice-id">Account Number:</label>
             <input type="text" id="invoice-id" value="{{data[0]}}" name="ac_no">
         </div>
@@ -124,7 +132,7 @@
             <label for="total">total:</label>
             <input type="text" id="total" value="{{data[11]}}" name="total">
         </div>
-        <button type="submit" class="submit-btn">Submit</button>
+        <button type="submit" class="submit-btn">Reviewed</button>
     </form>
 </div>
 

@@ -16,8 +16,9 @@ def index():
 def upload():
     if request.method == 'POST':
         f = request.files['fileInput']
-        f.save("invoice.pdf")
-        data= extract_invoice_data_from_pdf("invoice.pdf")
+        filename=f.filename
+        f.save(r"D:\invoice\static\uploads\{}".format(filename))
+        data= extract_invoice_data_from_pdf(r"D:\invoice\static\uploads\{}".format(filename))
         account_number = data["Account Number"] if data["Account Number"] is not None else "NULL"
         bank_name = data["Bank Name"] if data["Bank Name"] is not None else "NULL"
         bill_to_address = data["Bill to Address"] if data["Bill to Address"] is not None else "NULL"
@@ -30,15 +31,16 @@ def upload():
         subtotal = float(data["Subtotal"].replace("INR ", "").replace(",", "")) if data["Subtotal"] is not None else "NULL"
         tax = data["Tax"] if data["Tax"] is not None else "NULL"
         total_amount = float(data["Total Amount"].replace("INR ", "").replace(",", "")) if data["Total Amount"] is not None else "NULL"
+        type=data["Type"]
         reviewed = 0
         query = """
             INSERT INTO data 
             (ac_no, bank_name, bill_to_address, bill_to_name, dept, id, 
-            ifsc_code, invoice_date, invoice_no, subtotal, tax, total,reviewed) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s)
+            ifsc_code, invoice_date, invoice_no, subtotal, tax, total,reviewed,filename,type) 
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)
         """
         values = (account_number, bank_name, bill_to_address, bill_to_name, department, employee_id,
-                ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed)
+                ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed,filename,type)
 
         # Executing the query
         cursor.execute(query, values)
@@ -60,7 +62,7 @@ def validate():
             session['username'] = "admin"
         elif username == 'checker@gmail.com' and password == 'checker@123':
             session['username'] = "checker"
-        return render_template('index.html')
+        return redirect('/')
 
 
 
@@ -100,12 +102,13 @@ def update_data(id):
         tax = request.form['tax']
         total_amount = request.form['total']
         reviewed=1
+        type=request.form['type']
         query = """
             UPDATE data SET ac_no = %s, bank_name = %s, bill_to_address = %s, bill_to_name = %s, dept = %s, id = %s, 
-            ifsc_code = %s, invoice_date = %s, invoice_no = %s, subtotal = %s, tax = %s, total = %s,reviewed = %s WHERE invoice_no = %s
+            ifsc_code = %s, invoice_date = %s, invoice_no = %s, subtotal = %s, tax = %s, total = %s,reviewed = %s,type = %s WHERE invoice_no = %s
         """
         values = (account_number, bank_name, bill_to_address, bill_to_name, department, employee_id,
-                ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed,id)
+                ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed,type,id)
         cursor.execute(query, values)
         conn.commit()
         return redirect(url_for('viewdata'))

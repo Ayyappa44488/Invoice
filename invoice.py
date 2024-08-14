@@ -39,6 +39,9 @@ def extract_invoice_data_from_pdf(pdf_path):
             r"Account Number:\s*(\d+)"
         )
         invoice_data["IFSC Code"] = extract_field(r"IFSC Code:\s*(.*)")
-
+        if "Employability Reimbursement Invoice" in extracted_text:
+            invoice_data["Type"] = "Employability Reimbursement"
+        else:
+            invoice_data["Type"] = "Purchase Power" 
 
     return invoice_data
