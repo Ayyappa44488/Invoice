@@ -15,6 +15,7 @@ def index():
 @app.route('/upload', methods=['POST'])
 def upload():
     if request.method == 'POST':
+        print(request.files)
         f = request.files['fileInput']
         filename=f.filename
         f.save(r"D:\invoice\static\uploads\{}".format(filename))
@@ -67,10 +68,10 @@ def validate():
         return "Invalid Credentials"
 
 
-
 @app.route('/parse_invoice')
 def parse_invoice():
     return render_template('parse_invoice.html')
+
 
 @app.route('/viewdata')
 def viewdata():
@@ -122,6 +123,7 @@ def admin_data():
     cursor.execute(query,)
     data=cursor.fetchall()
     return render_template('viewdata.html',data=data,url="admin_view",name="view")
+
 
 @app.route("/admin_view/<string:id>")
 def admin_view(id):

@@ -1,13 +1,195 @@
-<html>
-    <head>
-        <title>Invoice Parser</title>
-    </head>
-    <body>
-        <h1>Invoice Parser</h1>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-            <input type="file" name="fileInput" required>
-            <button type="submit">Parse Invoice</button>
-        </form>
-        <button onclick="document.location='/'">Go Back</button>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invoice Parser</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fff;
+        }
+        h1{
+            text-align: center;
+            font-size: 65px;
+            color: #fff;
+            margin-top: 10px solid #53C9C2;
+        }
+        .form-container {
+            width: 100vw;
+            height: 60vh;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .upload-files-container {
+            background-color: #fff;
+            width: 420px;
+            padding: 30px 60px;
+            border-radius: 0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            box-shadow: rgba(0, 0, 0, 0.24) 0px 10px 20px, rgba(0, 0, 0, 0.28) 0px 6px 6px;
+        }
+        .drag-file-area {
+            border: 2px dashed #53C9C2;
+            border-radius: 0px;
+            margin: 10px 0 15px;
+            padding: 30px 50px;
+            width: 350px;
+            text-align: center;
+        }
+        .drag-file-area .upload-icon {
+            font-size: 50px;
+        }
+        .drag-file-area h3 {
+            font-size: 26px;
+            margin: 15px 0;
+        }
+        .drag-file-area label {
+            font-size: 19px;
+        }
+        .drag-file-area label .browse-files-text {
+            color: #53C9C2;
+            font-weight: bolder;
+            cursor: pointer;
+        }
+        .browse-files span {
+            position: relative;
+            top: -25px;
+        }
+        .default-file-input {
+            opacity: 0;
+        }
+        .cannot-upload-message {
+            background-color: #ffc6c4;
+            font-size: 17px;
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            padding: 5px 10px 5px 30px;
+            border-radius: 0px;
+            color: #BB0000;
+            display: none;
+        }
+        @keyframes fadeIn {
+        0% {opacity: 0;}
+        100% {opacity: 1;}
+        }
+        .cannot-upload-message span, .upload-button-icon {
+            padding-right: 10px;
+        }
+        .cannot-upload-message span:last-child {
+            padding-left: 20px;
+            cursor: pointer;
+        }
+        .file-block {
+            color: #f7fff7;
+            background-color: #53C9C2;
+            transition: all 1s;
+            width: 390px;
+            position: relative;
+            display: none;
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0 15px;
+            padding: 0px 0px;
+            border-radius: 0px;
+            cursor: pointer;
+        }
+        .file-info {
+            display: flex;
+            align-items: center;
+            font-size: 15px;
+        }
+        .file-icon {
+            margin-right: 10px;
+        }
+        .file-name, .file-size {
+            padding: 0 3px;
+        }
+        .remove-file-icon {
+            cursor: pointer;
+        }
+        .progress-bar {
+            display: flex;
+            position: absolute;
+            bottom: 0;
+            left: 4.5%;
+            width: 0;
+            height: 5px;
+            border-radius: 0px;
+        }
+        .parse-button {
+            font-family: 'Montserrat';
+            background-color: #53C9C2;
+            color: #f7fff7;
+            display: flex;
+            align-items: center;
+            font-size: 18px;
+            border: none;
+            border-radius: 0px;
+            margin: 10px;
+            padding: 7.5px 50px;
+            cursor: pointer;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>Parse Invoice</h1>
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined" rel="stylesheet">
+    <form class="form-container" action="/upload" method="POST" enctype='multipart/form-data'>
+        <div class="upload-files-container">
+            <div class="drag-file-area">
+                <span class="material-icons-outlined upload-icon"> file_upload </span>
+                <h3 class="dynamic-message"> Drag & drop any file here </h3>
+                <label class="label"> or <span class="browse-files"> 
+                <input type="file" class="default-file-input" name="fileInput" required/> 
+                <span class="browse-files-text">browse file</span> 
+                <span>from device</span> </span> </label>
+            </div>
+            <span class="cannot-upload-message"> <span class="material-icons-outlined">error</span> Please select a file
+                first <span class="material-icons-outlined cancel-alert-button">cancel</span> </span>
+            <div class="file-block">
+                <div class="file-info"> <span class="material-icons-outlined file-icon">description</span> 
+                    <span class="file-name"> </span> | <span class="file-size"> </span> </div>
+                <span class="material-icons remove-file-icon">delete</span>
+                <div class="progress-bar"></div>
+            </div>
+            <button type="submit" class="parse-button"> Parse Invoice </button>
+        </div>
+    </form>
+
+    <script>
+        const fileInput = document.querySelector('.default-file-input');
+        const fileBlock = document.querySelector('.file-block');
+        const fileNameSpan = document.querySelector('.file-name');
+        const fileSizeSpan = document.querySelector('.file-size');
+        
+        fileInput.addEventListener('change', function() {
+            const file = this.files[0];
+            if (file) {
+                fileNameSpan.textContent = file.name;
+                fileSizeSpan.textContent = (file.size / 1024).toFixed(2) + ' KB';
+                fileBlock.style.display = 'flex';
+            }
+        });
+
+        // Optional: Remove file and hide the file block when delete icon is clicked
+        const removeFileIcon = document.querySelector('.remove-file-icon');
+        removeFileIcon.addEventListener('click', function() {
+            fileInput.value = ''; // Clear the file input
+            fileBlock.style.display = 'none'; // Hide the file block
+        });
+    </script>
+</body>
 </html>
