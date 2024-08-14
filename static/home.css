@@ -832,3 +832,8 @@ i{
 ::-webkit-scrollbar-thumb {
     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
+
+.logo1{
+margin-left:700px ;
+margin-top: 40px;
+}

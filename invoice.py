@@ -42,8 +42,3 @@ def extract_invoice_data_from_pdf(pdf_path):
 
 
     return invoice_data
-
-
-if __name__ == "__main__":
-    pdf_path = r"C:\Users\Dell\Downloads\purchase_power_invoice.pdf" # Replace with your actual path
-    extracted_data = extract_invoice_data_from_pdf(pdf_path)

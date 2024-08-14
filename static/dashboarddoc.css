@@ -1,0 +1,196 @@
+/* Global styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 100%;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.header_fixed {
+    max-height: 100vh;
+    width: 100%;
+    overflow: auto;
+    border: 1px solid #53C9C2;
+}
+
+#span {
+    font-weight: bold;
+    color: white;
+}
+
+.header_fixed thead th {
+    position: sticky;
+    top: 0;
+    background-color: #53C9C2;
+    color: white;
+    font-weight: normal;
+    font-size: 36px;
+}
+
+.header_fixed thead th label {
+    background-color: white;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 15px;
+    padding: 6px;
+}
+
+.header_fixed thead th label:hover {
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+th, td {
+    padding: 16px 20px;
+    font-size: 16px;
+    text-align: center;
+}
+
+td img {
+    height: 150px;
+    width: 150px;
+}
+
+tr:nth-child(even):hover {
+    border: 2px solid #53C9C2;
+}
+
+tr:nth-child(odd):hover {
+    border: 2px solid #53C9C2;
+}
+
+tr:hover td {
+    color: #53C9C2;
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+tbody th {
+    font-size: 20px;
+    font-weight: bold;
+    color: #48747E;
+}
+
+.btn {
+    background-color: #2fa8a0;
+    border: none;
+    color: white;
+    padding: 10px 82px;
+    text-align: center;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+}
+
+.btn:hover {
+    box-shadow: 3px 3px 3px #53C9C2;
+}
+
+/* Popup container initially hidden */
+.popup .overlay,
+.popup .rectangle {
+    display: none;
+}
+
+/* Styles for the active popup */
+.popup.active .overlay {
+    display: block;
+}
+
+.popup.active .rectangle {
+    transition: all 300ms ease-in-out;
+    transform: translate(0%, 0%) scale(1);
+    display: block; /* Show the form when the popup is active */
+}
+
+.rectangle img {
+    width: 277px;
+    height: 182px;
+    position: absolute;
+    left: 140px;
+    top: 60px;
+    cursor: pointer;
+}
+
+.disease {
+    color: #000;
+    position: absolute;
+    left: 30px;
+    top: 260px;
+    font-size: 20px;
+}
+
+.line {
+    position: absolute;
+    width: 563px;
+    top: 310px;
+    border: 1px solid #000000;
+}
+
+textarea {
+    position: absolute;
+    width: 538px;
+    left: 13px;
+    top: 360px;
+}
+
+.rectangle button {
+    background-color: #2fa8a0;
+    border: none;
+    color: white;
+    padding: 10px 82px;
+    font-size: 20px;
+    margin: 4px 2px;
+    cursor: pointer;
+    transition-duration: 0.4s;
+    margin-top: 620px;
+    margin-left: 135px;
+}
+
+.rectangle button:hover {
+    box-shadow: 3px 3px 3px #53C9C2;
+}
+
+.popup1 .overlay,
+.popup1 .content {
+    display: none;
+}
+
+.popup1.active .overlay {
+    display: block;
+}
+
+.popup1.active .content {
+    transition: all 300ms ease-in-out;
+    transform: translate(-50%, -50%) scale(1);
+    display: block;
+}
+
+.tick {
+    padding-top: 15px;
+    color: skyblue;
+    font-size: 40px;
+}

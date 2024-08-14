@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Table Design || Future Web</title>
+    <link rel="stylesheet" href="/static/dashboarddoc.css" />
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+</head>
+
+<body>
+    <div class="header_fixed">
+        <table>
+            <div class="head">
+                <thead>
+                    <tr style="border: 2px solid #53C9C2;">
+                        <th>Data <span id="span">Dashboard</span></th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </div>
+            <tbody>
+                <tr style="border: 2px solid #53C9C2;">
+                    <th>invoice id</th>
+                    <th>Invoice Date</th>
+                    <th>Edit</th>
+                </tr>
+                {% for row in data %}
+                <tr>
+                    <td>{{ row[8]}}</td>
+                    <td>{{row[7]}}</td>
+                    <td><button class="btn" onclick="document.location='/{{url}}/{{row[8]}}'"><b><i class="uil uil-eye" style="margin-right:10px;" > {{name}}</b></button></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <center><button onclick="location.href='/'" class="btn">Go Home</button></center>
+</body>
+</html>

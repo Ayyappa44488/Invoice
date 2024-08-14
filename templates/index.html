@@ -15,7 +15,7 @@
             
             <ul class="links">
                 
-                {%if session['user'] or session['asha'] or session['doctor']%}<li><span onclick="openForm()"><img src="/static/user.png" class="logo1" alt="info" style="margin-top:5px;height:50px;width:50px;"></span></li>{%endif%}
+                {%if session['username']%}<li><span onclick="openForm()"><img src="/static/user.png" class="logo1" alt="info" style="margin-top:5px;height:50px;width:50px;"></span></li>{%endif%}
             </ul>
             <label for="nav-toggle" class="icon-burger">
                 <div class="line"></div>
@@ -26,29 +26,35 @@
     </header><!-- Button to open the form -->
     
     <div class="form-popup" id="myForm">
-      <form class="form-container" action="/logout" >
+      <form class="form-container" >
         <span onclick="closeForm()" class="close" title="Close window">&times;</span>
         <center><img src="/static/user.png"  style="border-radius:2.8cm"><br><br>
           <hr><br>
           <label for="email"><b><span style="color:#fff">Hai...Welcome to Tele-medicine kiosk :)</span></b></label>
           <br><br>
           <label for="psw"><b><span style="color:#fff"></span></b></label>
+          
         </center>
         <br>
         <hr><br>
-        
-        <button type="submit" class="btn" onclick="document.location='/logout' "><b>Logout</b></button>
+        {%if session['username']=="checker"%}
+        <button type="button" class="btn" onclick="document.location='/viewdata' "><b>viewdata</b></button>{%endif%}
+        {%if session['username']=="admin"%}
+        <button type="button" class="btn" onclick="document.location='/admin_data' "><b>admindata</b></button>{%endif%}
+
       </form>
+      {%if session['username']%}
+        <button type="button" class="btn" onclick="document.location='/logout' "><b>logout</b></button>{%endif%}
     </div>
     <main>
         <section id="Home">
         <div class="hero">
             <h2 style="color:tomato">{{message}}</h2>
-            <h1>TELEMEDICINE KIOSK</h1>
+            <h1>Invoice Parser</h1>
             <div>
-                {%if not session['user']%}
+                {%if not session['username']%}
                <button type="button" onclick="document.location='/login'" class="button">LOGIN</button>{%endif%}
-                <button type="button" onclick="document.location='/registerpage'" class="button">Parse Invoice</button>
+                <button type="button" onclick="document.location='/parse_invoice'" class="button">Parse Invoice</button>
                 <!-- <button type="button" onclick="document.location='/login'" class="button">LOGIN</button> -->
             </div>
         </div>
