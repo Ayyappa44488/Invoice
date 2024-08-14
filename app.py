@@ -60,9 +60,11 @@ def validate():
         password = request.form['password']
         if username == 'admin@gmail.com' and password == 'admin@123':
             session['username'] = "admin"
+            return redirect('/')
         elif username == 'checker@gmail.com' and password == 'checker@123':
             session['username'] = "checker"
-        return redirect('/')
+            return redirect('/')
+        return "Invalid Credentials"
 
 
 
@@ -134,5 +136,7 @@ def admin_view(id):
 def logout():
     session.pop('username',None)
     return redirect('/')
+
+
 if __name__ == "__main__":
     app.run(debug=True)

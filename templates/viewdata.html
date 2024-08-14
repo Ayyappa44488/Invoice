@@ -30,7 +30,7 @@
                     <th>Invoice id</th>
                     <th>Invoice Date</th>
                     <th>Invoice Type</th>
-                    <th>Edit</th>
+                    <th>{%if session['username']=='checker'%}Edit{%else%}View{%endif%}</th>
                 </tr>
                 {% for row in data %}
                 <tr>
@@ -38,7 +38,7 @@
                     <td>{{ row[8]}}</td>
                     <td>{{row[7]}}</td>
                     <td>{{row[14]}}</td>
-                    <td><button class="btn" onclick="document.location='/{{url}}/{{row[8]}}'"><b><i class="uil uil-eye" style="margin-right:10px;" > {{name}}</b></button></td>
+                    <td><button class="btn" onclick="document.location='/{{url}}/{{row[8]}}'"><b> {{name}}</b></button></td>
                 </tr>
                 {% endfor %}
             </tbody>
