@@ -18,8 +18,8 @@ def upload():
         print(request.files)
         f = request.files['fileInput']
         filename=f.filename
-        f.save(r"D:\invoice\static\uploads\{}".format(filename))
-        data= extract_invoice_data_from_pdf(r"D:\invoice\static\uploads\{}".format(filename))
+        f.save(r"static\uploads\{}".format(filename))
+        data= extract_invoice_data_from_pdf(r"static\uploads\{}".format(filename))
         account_number = data["Account Number"] if data["Account Number"] is not None else "NULL"
         bank_name = data["Bank Name"] if data["Bank Name"] is not None else "NULL"
         bill_to_address = data["Bill to Address"] if data["Bill to Address"] is not None else "NULL"
@@ -34,19 +34,24 @@ def upload():
         total_amount = float(data["Total Amount"].replace("INR ", "").replace(",", "")) if data["Total Amount"] is not None else "NULL"
         type=data["Type"]
         reviewed = 0
-        query = """
-            INSERT INTO data 
-            (ac_no, bank_name, bill_to_address, bill_to_name, dept, id, 
-            ifsc_code, invoice_date, invoice_no, subtotal, tax, total,reviewed,filename,type) 
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)
-        """
-        values = (account_number, bank_name, bill_to_address, bill_to_name, department, employee_id,
-                ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed,filename,type)
+        check_query="select * from data where invoice_no = %s;"
+        cursor.execute(check_query,(invoice_number,))
+        if cursor.fetchone():
+            return render_template('parse_invoice.html',message="Invoice Already Exists")
+        else:
+            query = """
+                INSERT INTO data 
+                (ac_no, bank_name, bill_to_address, bill_to_name, dept, id, 
+                ifsc_code, invoice_date, invoice_no, subtotal, tax, total,reviewed,filename,type) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s,%s,%s,%s)
+            """
+            values = (account_number, bank_name, bill_to_address, bill_to_name, department, employee_id,
+                    ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed,filename,type)
 
-        # Executing the query
-        cursor.execute(query, values)
-        conn.commit()
-        return redirect(url_for('parse_invoice'))
+            # Executing the query
+            cursor.execute(query, values)
+            conn.commit()
+            return redirect(url_for('parse_invoice'))
     
     
 @app.route('/login')
