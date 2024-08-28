@@ -17,11 +17,7 @@
                 
                 {%if session['username']%}<li><span onclick="openForm()"><img src="/static/user.png" class="logo1" alt="info" style="margin-top:5px;height:50px;width:50px;"></span></li>{%endif%}
             </ul>
-            <label for="nav-toggle" class="icon-burger">
-                <div class="line"></div>
-                <div class="line"></div>
-                <div class="line"></div>
-            </label>
+           
         </nav>
     </header><!-- Button to open the form -->
     
@@ -29,6 +25,7 @@
       <form class="form-container" >
         <span onclick="closeForm()" class="close" title="Close window">&times;</span>
         <center><img src="/static/user.png"  style="border-radius:2.8cm"><br><br>
+          <label for="email"><b><span style="color:#fff">{{session['username']}}</span></b></label>
           <hr><br>
           <label for="email"><b><span style="color:#fff">Hai...Welcome to Invoice Parser :)</span></b></label>
           <br><br>
@@ -37,8 +34,10 @@
         </center>
         <br>
         <hr><br>
-        {%if session['username']=="checker"%}
+        {%if session['username'] and session['username']!="admin"%}
         <button type="button" class="btn" onclick="document.location='/viewdata' "><b>viewdata</b></button>{%endif%}
+        {%if session['username']=="admin"%}
+        <button type="button" class="btn" onclick="document.location='/add_checker' "><b>addchecker</b></button>{%endif%}
         {%if session['username']=="admin"%}
         <button type="button" class="btn" onclick="document.location='/admin_data' "><b>admindata</b></button>{%endif%}
         {%if session['username']%}
@@ -50,7 +49,7 @@
         <section id="Home">
         <div class="hero">
             <h2 style="color:tomato">{{message}}</h2>
-            <h1>Invoice Parser</h1>
+            <h1>Invoice Parser</h1><br>
             <div>
                 {%if not session['username']%}
                <button type="button" onclick="document.location='/login'" class="button">LOGIN</button>{%endif%}
@@ -58,8 +57,6 @@
                 <!-- <button type="button" onclick="document.location='/login'" class="button">LOGIN</button> -->
             </div>
         </div>
-    </section>
-   
     </section>
     
 </main>

@@ -96,12 +96,12 @@
             transition: all 1s;
             width: 390px;
             position: relative;
-            display: none;
+            display: flex;
             flex-direction: row;
             justify-content: space-between;
             align-items: center;
             margin: 10px 0 15px;
-            padding: 0px 0px;
+            padding: 5px 10px;
             border-radius: 0px;
             cursor: pointer;
         }
@@ -141,7 +141,6 @@
             padding: 7.5px 50px;
             cursor: pointer;
         }
-        
     </style>
 </head>
 <body>
@@ -151,46 +150,70 @@
         <div class="upload-files-container">
             <span style="color:tomato">{{message}}</span>
             <div class="drag-file-area">
-                
                 <span class="material-icons-outlined upload-icon"> file_upload </span>
                 <h3 class="dynamic-message"> Drag & drop any file here </h3>
                 <label class="label"> or <span class="browse-files"> 
-                <input type="file" class="default-file-input" name="fileInput" required/> 
-                <span class="browse-files-text">browse file</span> 
+                <input type="file" class="default-file-input" name="fileInput" multiple required/> 
+                <span class="browse-files-text">browse files</span> 
                 <span>from device</span> </span> </label>
             </div>
             <span class="cannot-upload-message"> <span class="material-icons-outlined">error</span> Please select a file
                 first <span class="material-icons-outlined cancel-alert-button">cancel</span> </span>
-            <div class="file-block">
-                <div class="file-info"> <span class="material-icons-outlined file-icon">description</span> 
-                    <span class="file-name"> </span> | <span class="file-size"> </span> </div>
-                <span class="material-icons remove-file-icon">delete</span>
-                <div class="progress-bar"></div>
-            </div>
-            <button type="submit" class="parse-button"> Parse Invoice </button>
+            <div class="file-list"></div>
+            <button type="submit" class="parse-button"> Parse Invoices </button>
         </div>
     </form>
 
     <script>
         const fileInput = document.querySelector('.default-file-input');
-        const fileBlock = document.querySelector('.file-block');
-        const fileNameSpan = document.querySelector('.file-name');
-        const fileSizeSpan = document.querySelector('.file-size');
+        const fileList = document.querySelector('.file-list');
         
         fileInput.addEventListener('change', function() {
-            const file = this.files[0];
-            if (file) {
-                fileNameSpan.textContent = file.name;
-                fileSizeSpan.textContent = (file.size / 1024).toFixed(2) + ' KB';
-                fileBlock.style.display = 'flex';
-            }
-        });
+            fileList.innerHTML = ''; // Clear existing files
+            const files = this.files;
+            for (let i = 0; i < files.length; i++) {
+                const fileBlock = document.createElement('div');
+                fileBlock.classList.add('file-block');
+                
+                const fileInfo = document.createElement('div');
+                fileInfo.classList.add('file-info');
+                
+                const fileIcon = document.createElement('span');
+                fileIcon.classList.add('material-icons-outlined', 'file-icon');
+                fileIcon.textContent = 'description';
+                
+                const fileName = document.createElement('span');
+                fileName.classList.add('file-name');
+                fileName.textContent = files[i].name;
+                
+                const fileSize = document.createElement('span');
+                fileSize.classList.add('file-size');
+                fileSize.textContent = (files[i].size / 1024).toFixed(2) + ' KB';
+                
+                const removeIcon = document.createElement('span');
+                removeIcon.classList.add('material-icons', 'remove-file-icon');
+                removeIcon.textContent = 'delete';
+                removeIcon.addEventListener('click', function() {
+                    fileBlock.remove();
+                    // Update file input to remove this file
+                    const dt = new DataTransfer();
+                    for (let j = 0; j < files.length; j++) {
+                        if (j !== i) {
+                            dt.items.add(files[j]);
+                        }
+                    }
+                    fileInput.files = dt.files;
+                });
 
-        // Optional: Remove file and hide the file block when delete icon is clicked
-        const removeFileIcon = document.querySelector('.remove-file-icon');
-        removeFileIcon.addEventListener('click', function() {
-            fileInput.value = ''; // Clear the file input
-            fileBlock.style.display = 'none'; // Hide the file block
+                fileInfo.appendChild(fileIcon);
+                fileInfo.appendChild(fileName);
+                fileInfo.appendChild(fileSize);
+                
+                fileBlock.appendChild(fileInfo);
+                fileBlock.appendChild(removeIcon);
+                
+                fileList.appendChild(fileBlock);
+            }
         });
     </script>
 </body>

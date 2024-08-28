@@ -67,10 +67,16 @@ def validate():
         if username == 'admin@gmail.com' and password == 'admin@123':
             session['username'] = "admin"
             return redirect('/')
-        elif username == 'checker@gmail.com' and password == 'checker@123':
-            session['username'] = "checker"
-            return redirect('/')
-        return "Invalid Credentials"
+        else:
+            query="select * from checker where email = %s and password = %s;"
+            cursor.execute(query,(username,password))
+            data=cursor.fetchone()
+            if data:
+                session['username'] = data[1]
+                session['email']=data[0]
+                return redirect('/')
+            else:
+                return render_template('login.html',message="Invalid Credentials")
 
 
 @app.route('/parse_invoice')
@@ -113,10 +119,11 @@ def update_data(id):
         type=request.form['type']
         query = """
             UPDATE data SET ac_no = %s, bank_name = %s, bill_to_address = %s, bill_to_name = %s, dept = %s, id = %s, 
-            ifsc_code = %s, invoice_date = %s, invoice_no = %s, subtotal = %s, tax = %s, total = %s,reviewed = %s,type = %s WHERE invoice_no = %s
+            ifsc_code = %s, invoice_date = %s, invoice_no = %s, subtotal = %s, tax = %s, total = %s,reviewed = %s,type = %s,checker=%s WHERE invoice_no = %s
         """
+        print(session['email'])
         values = (account_number, bank_name, bill_to_address, bill_to_name, department, employee_id,
-                ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed,type,id)
+                ifsc_code, invoice_date, invoice_number, subtotal, tax, total_amount,reviewed,type,session['email'],id)
         cursor.execute(query, values)
         conn.commit()
         return redirect(url_for('viewdata'))
@@ -136,9 +143,28 @@ def admin_view(id):
     values=(id,)
     cursor.execute(query,values)
     data=cursor.fetchone()
-    return render_template('admin_data.html',data=data)
+    name_query="select name from checker where email=%s;"
+    cursor.execute(name_query,(data[15],))
+    name=cursor.fetchone()
+    return render_template('admin_data.html',data=data,name=name[0])
 
 
+@app.route("/add_checker")
+def add_checker():
+    return render_template('checker_register.html')
+
+
+@app.route("/register_checker",methods=['POST'])
+def register_checker():
+    if request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        password = request.form['password']
+        query="insert into checker (email,name,password) values (%s,%s,%s);"
+        values=(email,name,password)
+        cursor.execute(query,values)
+        conn.commit()
+        return redirect('/')
 @app.route('/logout')
 def logout():
     session.pop('username',None)
